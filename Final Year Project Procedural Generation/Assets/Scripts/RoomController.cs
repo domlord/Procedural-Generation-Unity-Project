@@ -19,9 +19,9 @@ public class RoomController : MonoBehaviour
 
     private RoomInfo CurrentLoadRoomData;
 
-    Queue<RoomInfo> _loadRoomQueue = new Queue<RoomInfo>();
+    Queue<RoomInfo> _loadRoomQueue = new Queue<RoomInfo>(); //A queue of rooms to be loaded
 
-    public List<Room> loadedRooms = new List<Room>();
+    public List<Room> loadedRooms = new List<Room>(); //A list of all rooms
 
     private bool _isLoadingRoom;
 
@@ -30,8 +30,44 @@ public class RoomController : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        LoadRoom("Start", 0, 0);
+        LoadRoom("Empty", 1, 0);
+        LoadRoom("Empty", -1, 0);
+        LoadRoom("Empty", 0, 1);
+        LoadRoom("Empty", 0, -1);
+    }
+
+    private void Update()
+    {
+        UpdateRoomQueue();
+    }
+
+    private void UpdateRoomQueue()
+    {
+        if (_isLoadingRoom || _loadRoomQueue.Count == 0)
+        {
+            return;
+        }
+
+        CurrentLoadRoomData = _loadRoomQueue.Dequeue();
+        _isLoadingRoom = true;
+
+        StartCoroutine(LoadRoomRoutine(CurrentLoadRoomData));
+    }
+
+    /*
+     * A function that loads a given room, taking in parameters roomName, x and y.
+     * Room is loaded at x and y coordinates input into the function
+     */
     public void LoadRoom(string roomName, int x, int y)
     {
+        if (DoesRoomExist(x, y))
+        {
+            return;
+        }
+
         RoomInfo newRoomData = new RoomInfo();
         newRoomData.RoomName = roomName;
         newRoomData.X = x;
@@ -62,10 +98,14 @@ public class RoomController : MonoBehaviour
         room.Y = CurrentLoadRoomData.Y;
         room.name = CurrentRoomName + "-" + CurrentLoadRoomData.RoomName + "-" + room.X + ", " + room.Y;
         room.transform.parent = transform;
+
+        _isLoadingRoom = false;
+
+        loadedRooms.Add(room);
     }
 
     public bool DoesRoomExist(int x, int y)
     {
-        return loadedRooms.Find(item => item.X == x && item.Y == y) != null;
+        return loadedRooms.Find(item => item.X == x && item.Y == y) != null; //Returns a 
     }
 }
