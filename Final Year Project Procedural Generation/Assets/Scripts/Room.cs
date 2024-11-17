@@ -31,4 +31,13 @@ public class Room : MonoBehaviour
     {
         return new Vector3(X * Width, Y * Height);
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            Debug.Log("Player entered");
+            RoomController.Instance.OnPlayerEnterRoom(this);
+        }
+    }
 }

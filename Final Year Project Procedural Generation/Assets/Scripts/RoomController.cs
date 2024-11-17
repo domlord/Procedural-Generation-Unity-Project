@@ -15,11 +15,13 @@ public class RoomController : MonoBehaviour
 {
     public static RoomController Instance;
 
-    private string CurrentRoomName = "Basement";
+    private readonly string _currentRoomName = "Basement";
 
-    private RoomInfo CurrentLoadRoomData;
+    private RoomInfo _currentLoadRoomData;
 
-    Queue<RoomInfo> _loadRoomQueue = new Queue<RoomInfo>(); //A queue of rooms to be loaded
+    private Room _currentRoom;
+
+    readonly Queue<RoomInfo> _loadRoomQueue = new Queue<RoomInfo>(); //A queue of rooms to be loaded
 
     public List<Room> loadedRooms = new List<Room>(); //A list of all rooms
 
@@ -51,10 +53,10 @@ public class RoomController : MonoBehaviour
             return;
         }
 
-        CurrentLoadRoomData = _loadRoomQueue.Dequeue();
+        _currentLoadRoomData = _loadRoomQueue.Dequeue();
         _isLoadingRoom = true;
 
-        StartCoroutine(LoadRoomRoutine(CurrentLoadRoomData));
+        StartCoroutine(LoadRoomRoutine(_currentLoadRoomData));
     }
 
     /*
@@ -78,7 +80,7 @@ public class RoomController : MonoBehaviour
 
     IEnumerator LoadRoomRoutine(RoomInfo info)
     {
-        string roomName = CurrentRoomName + info.RoomName;
+        string roomName = _currentRoomName + info.RoomName;
 
         AsyncOperation loadRoom = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
 
@@ -91,15 +93,20 @@ public class RoomController : MonoBehaviour
     public void RegisterRoom(Room room)
     {
         room.transform.position = new Vector3(
-            CurrentLoadRoomData.X * room.Width,
-            CurrentLoadRoomData.Y * room.Height, 0);
+            _currentLoadRoomData.X * room.Width,
+            _currentLoadRoomData.Y * room.Height, 0);
 
-        room.X = CurrentLoadRoomData.X;
-        room.Y = CurrentLoadRoomData.Y;
-        room.name = CurrentRoomName + "-" + CurrentLoadRoomData.RoomName + "-" + room.X + ", " + room.Y;
+        room.X = _currentLoadRoomData.X;
+        room.Y = _currentLoadRoomData.Y;
+        room.name = _currentRoomName + "-" + _currentLoadRoomData.RoomName + "-" + room.X + ", " + room.Y;
         room.transform.parent = transform;
 
         _isLoadingRoom = false;
+
+        if (loadedRooms.Count == 0)
+        {
+            CameraController.Instance.currentRoom = room;
+        }
 
         loadedRooms.Add(room);
     }
@@ -107,5 +114,11 @@ public class RoomController : MonoBehaviour
     public bool DoesRoomExist(int x, int y)
     {
         return loadedRooms.Find(item => item.X == x && item.Y == y) != null; //Returns a 
+    }
+
+    public void OnPlayerEnterRoom(Room room)
+    {
+        CameraController.Instance.currentRoom = room;
+        _currentRoom = room;
     }
 }
