@@ -8,7 +8,7 @@ public class Room : MonoBehaviour
     public int Width;
     public int Height;
 
-    public int X;
+    public int X; //test
     public int Y;
 
     private void Start()
