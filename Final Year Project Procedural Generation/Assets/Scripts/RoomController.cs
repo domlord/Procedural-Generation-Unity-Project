@@ -34,11 +34,11 @@ public class RoomController : MonoBehaviour
 
     private void Start()
     {
-        LoadRoom("Start", 0, 0);
-        LoadRoom("Empty", 1, 0);
-        LoadRoom("Empty", -1, 0);
-        LoadRoom("Empty", 0, 1);
-        LoadRoom("Empty", 0, -1);
+        // LoadRoom("Start", 0, 0);
+        // LoadRoom("Empty", 1, 0);
+        // LoadRoom("Empty", -1, 0);
+        // LoadRoom("Empty", 0, 1);
+        // LoadRoom("Empty", 0, -1);
     }
 
     private void Update()
@@ -62,6 +62,7 @@ public class RoomController : MonoBehaviour
     /*
      * A function that loads a given room, taking in parameters roomName, x and y.
      * Room is loaded at x and y coordinates input into the function
+     * Given room name input
      */
     public void LoadRoom(string roomName, int x, int y)
     {
@@ -92,23 +93,30 @@ public class RoomController : MonoBehaviour
 
     public void RegisterRoom(Room room)
     {
-        room.transform.position = new Vector3(
-            _currentLoadRoomData.X * room.Width,
-            _currentLoadRoomData.Y * room.Height, 0);
-
-        room.X = _currentLoadRoomData.X;
-        room.Y = _currentLoadRoomData.Y;
-        room.name = _currentRoomName + "-" + _currentLoadRoomData.RoomName + "-" + room.X + ", " + room.Y;
-        room.transform.parent = transform;
-
-        _isLoadingRoom = false;
-
-        if (loadedRooms.Count == 0)
+        if (!DoesRoomExist(_currentLoadRoomData.X, _currentLoadRoomData.Y))
         {
-            CameraController.Instance.currentRoom = room;
-        }
 
-        loadedRooms.Add(room);
+
+            room.transform.position = new Vector3(
+                _currentLoadRoomData.X * room.Width,
+                _currentLoadRoomData.Y * room.Height, 0);
+
+            room.X = _currentLoadRoomData.X;
+            room.Y = _currentLoadRoomData.Y;
+            room.name = _currentRoomName + "-" + _currentLoadRoomData.RoomName + "-" + room.X + ", " + room.Y;
+            room.transform.parent = transform;
+
+            _isLoadingRoom = false;
+
+            if (loadedRooms.Count == 0)
+            {
+                CameraController.Instance.currentRoom = room;
+            }
+
+            loadedRooms.Add(room);
+        }
+        Destroy(room.gameObject);
+        _isLoadingRoom = false;
     }
 
     public bool DoesRoomExist(int x, int y)

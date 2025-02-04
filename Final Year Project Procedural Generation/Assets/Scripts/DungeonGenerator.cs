@@ -1,18 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public DungeonGenerationData dungeonGenerationData;
+
+    private List<Vector2Int> _dungeonRooms;
+
+    private void Start()
     {
-        
+        _dungeonRooms = DungeonCrawlerController.GenerateDungeon(dungeonGenerationData);
+        SpawnRooms(_dungeonRooms);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SpawnRooms(IEnumerable<Vector2Int> rooms)
     {
-        
+        RoomController.Instance.LoadRoom("Start", 0, 0);
+        foreach (var roomLocation in rooms)
+        {
+            RoomController.Instance.LoadRoom("Empty", roomLocation.x, roomLocation.y);
+        }
     }
 }

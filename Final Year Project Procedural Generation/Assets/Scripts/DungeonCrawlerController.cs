@@ -24,7 +24,7 @@ public class DungeonCrawlerController : MonoBehaviour
             { Direction.right, Vector2Int.right }
         };
 
-    public static List<Vector2Int> GenerateDungeonCrawler(DungeonGenerationData dungeonGenerationData)
+    public static List<Vector2Int> GenerateDungeon(DungeonGenerationData dungeonGenerationData)
     {
         List<DungeonCrawler> dungeonCrawlers = new List<DungeonCrawler>();
 
