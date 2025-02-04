@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class DungeonCrawler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Vector2Int Position { get; set; }
+
+    public DungeonCrawler(Vector2Int startPosition)
     {
-        
+        Position = startPosition;
     }
 
-    // Update is called once per frame
-    void Update()
+    public Vector2Int Move(Dictionary<Direction, Vector2Int> directionsMovementMap)
     {
-        
+        Direction toMove = (Direction)Random.Range(0, directionsMovementMap.Count);
+        Position += directionsMovementMap[toMove];
+        return Position;
     }
 }
