@@ -10,6 +10,13 @@ public class Room : MonoBehaviour
 
     public int X; //test
     public int Y;
+    
+    public Door leftDoor;
+    public Door rightDoor;
+    public Door topDoor;
+    public Door bottomDoor;
+    
+    public List<Door> doors = new List<Door>();
 
     private void Start()
     {
@@ -17,6 +24,17 @@ public class Room : MonoBehaviour
         {
             return;
         }
+        
+        Door[] doorsChildren = GetComponentsInChildren<Door>();
+        foreach (Door door in doorsChildren)
+        {
+            switch (door.doorType)
+            {
+                c
+            }
+        }
+        
+        
 
         RoomController.Instance.RegisterRoom(this);
     }
