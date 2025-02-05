@@ -95,8 +95,6 @@ public class RoomController : MonoBehaviour
     {
         if (!DoesRoomExist(_currentLoadRoomData.X, _currentLoadRoomData.Y))
         {
-
-
             room.transform.position = new Vector3(
                 _currentLoadRoomData.X * room.Width,
                 _currentLoadRoomData.Y * room.Height, 0);
@@ -114,9 +112,14 @@ public class RoomController : MonoBehaviour
             }
 
             loadedRooms.Add(room);
+            room.RemoveDisconnectedDoors();
         }
-        Destroy(room.gameObject);
-        _isLoadingRoom = false;
+        else
+        {
+            Destroy(room.gameObject);
+            _isLoadingRoom = false;
+        }
+        
     }
 
     public bool DoesRoomExist(int x, int y)
@@ -128,5 +131,10 @@ public class RoomController : MonoBehaviour
     {
         CameraController.Instance.currentRoom = room;
         _currentRoom = room;
+    }
+
+    public Room FindRoom(int x, int y)
+    {
+        return loadedRooms.Find(item => item.X == x && item.Y == y);
     }
 }

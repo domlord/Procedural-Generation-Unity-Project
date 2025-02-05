@@ -27,10 +27,11 @@ public class DungeonCrawlerController : MonoBehaviour
     public static List<Vector2Int> GenerateDungeon(DungeonGenerationData dungeonGenerationData)
     {
         List<DungeonCrawler> dungeonCrawlers = new List<DungeonCrawler>();
-
+        DungeonCrawler dungeonCrawlerZero = new GameObject("DungeonCrawlerZero").AddComponent<DungeonCrawler>();
+        
         for (int i = 0; i < dungeonGenerationData.numberOfCrawlers; i++) 
         {
-           dungeonCrawlers.Add(new DungeonCrawler(Vector2Int.zero)); 
+           dungeonCrawlers.Add(dungeonCrawlerZero); 
         }
         
         int iterations = Random.Range(dungeonGenerationData.iterationMin, dungeonGenerationData.iterationMax);
