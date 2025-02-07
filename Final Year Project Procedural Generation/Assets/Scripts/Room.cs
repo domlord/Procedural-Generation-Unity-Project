@@ -35,6 +35,7 @@ public class Room : MonoBehaviour
                     break;
                 case Door.DoorType.Left :
                     leftDoor = door;
+                    doors.Add(leftDoor);
                     break;
                 case Door.DoorType.Top :
                     topDoor = door;
@@ -45,8 +46,6 @@ public class Room : MonoBehaviour
             }
         }
         
-        
-
         RoomController.Instance.RegisterRoom(this);
     }
 
