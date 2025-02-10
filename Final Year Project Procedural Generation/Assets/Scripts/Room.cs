@@ -10,6 +10,12 @@ public class Room : MonoBehaviour
 
     public int X; //test
     public int Y;
+
+    public Room(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
     
     public Door leftDoor;
     public Door rightDoor;
@@ -32,6 +38,7 @@ public class Room : MonoBehaviour
             {
                 case Door.DoorType.Right :
                     rightDoor = door;
+                    doors.Add(rightDoor);
                     break;
                 case Door.DoorType.Left :
                     leftDoor = door;
@@ -39,9 +46,11 @@ public class Room : MonoBehaviour
                     break;
                 case Door.DoorType.Top :
                     topDoor = door;
+                    doors.Add(topDoor);
                     break;
                 case Door.DoorType.Bottom :
                     bottomDoor = door;
+                    doors.Add(bottomDoor);
                     break;
             }
         }

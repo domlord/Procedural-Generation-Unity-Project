@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,6 +28,10 @@ public class RoomController : MonoBehaviour
 
     private bool _isLoadingRoom;
 
+    private bool _isBossRoomSpawned;
+    
+    private bool _areRoomsUpdated;
+
     private void Awake()
     {
         Instance = this;
@@ -48,15 +53,48 @@ public class RoomController : MonoBehaviour
 
     private void UpdateRoomQueue()
     {
-        if (_isLoadingRoom || _loadRoomQueue.Count == 0)
+        if (_isLoadingRoom)
         {
             return;
+        }
+
+        if (_loadRoomQueue.Count == 0)
+        {
+            if (!_isBossRoomSpawned)
+            {
+                StartCoroutine(SpawnBossRoom());
+            } 
+            else if (!_isBossRoomSpawned && _areRoomsUpdated)
+            {
+                foreach (var room in loadedRooms)
+                {
+                    room.RemoveDisconnectedDoors();
+                }
+
+                _areRoomsUpdated = true;
+            }
         }
 
         _currentLoadRoomData = _loadRoomQueue.Dequeue();
         _isLoadingRoom = true;
 
         StartCoroutine(LoadRoomRoutine(_currentLoadRoomData));
+    }
+
+    private IEnumerator SpawnBossRoom()
+    {
+        _isBossRoomSpawned = true;
+        yield return new WaitForSeconds(.5f);
+        if (_loadRoomQueue.Count == 0)
+        {
+            Room bossRoom = loadedRooms[loadedRooms.Count - 1];
+            Room tempRoom = new Room(bossRoom.X, bossRoom.Y);
+            Destroy(bossRoom.gameObject);
+            var roomToRemove = loadedRooms.Single(r => r.X == tempRoom.X && r.Y == tempRoom.Y);
+            loadedRooms.Remove(roomToRemove);
+            LoadRoom("End", tempRoom.X, tempRoom.Y);
+        }
+        
     }
 
     /*
@@ -112,7 +150,7 @@ public class RoomController : MonoBehaviour
             }
 
             loadedRooms.Add(room);
-            room.RemoveDisconnectedDoors();
+            // room.RemoveDisconnectedDoors();
         }
         else
         {
