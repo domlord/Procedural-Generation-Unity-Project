@@ -64,7 +64,7 @@ public class RoomController : MonoBehaviour
             {
                 StartCoroutine(SpawnBossRoom());
             } 
-            else if (!_isBossRoomSpawned && _areRoomsUpdated)
+            else if (_isBossRoomSpawned && !_areRoomsUpdated)
             {
                 foreach (var room in loadedRooms)
                 {
@@ -73,6 +73,7 @@ public class RoomController : MonoBehaviour
 
                 _areRoomsUpdated = true;
             }
+            return;
         }
 
         _currentLoadRoomData = _loadRoomQueue.Dequeue();

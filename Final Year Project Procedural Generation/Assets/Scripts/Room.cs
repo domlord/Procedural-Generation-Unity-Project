@@ -11,6 +11,8 @@ public class Room : MonoBehaviour
     public int X; //test
     public int Y;
 
+    private bool _haveDoorsUpdated;
+
     public Room(int x, int y)
     {
         X = x;
@@ -56,6 +58,15 @@ public class Room : MonoBehaviour
         }
         
         RoomController.Instance.RegisterRoom(this);
+    }
+
+    private void Update()
+    {
+        if (name.Contains("End") && !_haveDoorsUpdated)
+        {
+            RemoveDisconnectedDoors();
+            _haveDoorsUpdated = true;
+        }
     }
 
     public void RemoveDisconnectedDoors()
@@ -133,7 +144,7 @@ public class Room : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag( "Player"))
         {
             Debug.Log("Player entered");
             RoomController.Instance.OnPlayerEnterRoom(this);
