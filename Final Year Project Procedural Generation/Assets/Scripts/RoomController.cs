@@ -151,7 +151,6 @@ public class RoomController : MonoBehaviour
             }
 
             loadedRooms.Add(room);
-            // room.RemoveDisconnectedDoors();
         }
         else
         {
