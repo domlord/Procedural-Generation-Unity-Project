@@ -604,6 +604,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 0}
+  spawnerData:
+  - name: ChaseEnemy
+    spawnerData: {fileID: 0}
+  - name: 
+    spawnerData: {fileID: 0}
 --- !u!1 &908785939
 GameObject:
   m_ObjectHideFlags: 0
