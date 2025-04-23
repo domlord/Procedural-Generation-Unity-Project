@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4892853895605997624}
   - component: {fileID: 2749598246496817576}
   - component: {fileID: 8191206419603420747}
+  - component: {fileID: 4422756286174686458}
+  - component: {fileID: 4589323612828109845}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -47,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9f99b427d9d554cbe352e186674a9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 10
 --- !u!114 &4892853895605997624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,3 +159,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!70 &4422756286174686458
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228646489575239158}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.011366367, y: 0}
+  m_Size: {x: 0.97726727, y: 1}
+  m_Direction: 0
+--- !u!114 &4589323612828109845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5228646489575239158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f40931a715825469c8110237abacd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootPoint: {fileID: 2224840627121942346}
+  projectilePrefab: {fileID: 3087137475735532283, guid: 16f4cab67d9163e4c836047ab6e19da4, type: 3}
+  projectileSpeed: 10
+  aimIndicator: {fileID: 0}
+  indicatorDistance: 1
