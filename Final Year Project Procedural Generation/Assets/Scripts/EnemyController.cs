@@ -8,7 +8,8 @@ public enum EnemyState
 {
     Wander,
     Follow,
-    Die
+    Die,
+    Attack
 };
 
 public class EnemyController : MonoBehaviour
@@ -17,8 +18,11 @@ public class EnemyController : MonoBehaviour
     public EnemyState currentState = EnemyState.Wander;
     public float range;
     public float speed;
+    public float attackRange;
+    public float coolDown;
 
-    private bool choosDir = false;
+    private bool coolDownAttack;
+    private bool choosDir;
     private bool dead = false;
     private Vector3 randomDir;
 
@@ -39,6 +43,9 @@ public class EnemyController : MonoBehaviour
                 break;
             case (EnemyState.Die):
                 break;
+            case (EnemyState.Attack):
+                Attack();
+                break;
         }
 
         if (IsPlayerInRange(range) && currentState != EnemyState.Die)
@@ -49,6 +56,27 @@ public class EnemyController : MonoBehaviour
         {
             currentState = EnemyState.Wander;
         }
+
+        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+        {
+            currentState = EnemyState.Attack;
+        }
+    }
+
+    private void Attack()
+    {
+        if (!coolDownAttack)
+        {
+            GameController.DamagePlayer(1);
+            StartCoroutine(CoolDown());
+        }
+    }
+
+    private IEnumerator CoolDown()
+    {
+        coolDownAttack = true;
+        yield return new WaitForSeconds(coolDown);
+        coolDownAttack = false;
     }
 
     private bool IsPlayerInRange(float range)

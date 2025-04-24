@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,6 +10,12 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rb;
     private Vector2 _movement;
+    public TMP_Text collectedText;
+    public static int collectedAmount = 0;
+    public GameObject bulletPrefab;
+    public float bulletSpeed;
+    public float lastFire;
+    public float fireDelay;
 
     private void Awake()
     {
@@ -20,5 +27,6 @@ public class PlayerController : MonoBehaviour
         _movement.Set(InputManager.Movement.x, InputManager.Movement.y);
 
         _rb.velocity = _movement * moveSpeed;
+        collectedText.text = "Items Collected: " + collectedAmount;
     }
 }
