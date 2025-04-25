@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: edcef73383bbaae42916023c076dcbf2, type: 3}
-  m_Name: RandomItemSpawner
+  m_Name: Spawner
   m_EditorClassIdentifier: 
-  itemToSpawn: {fileID: 449940773353092190, guid: 0ef0667198ae7e146a255f679d8dd3b3, type: 3}
+  itemToSpawn: {fileID: 3077819769630314434, guid: cf40068e58153154aa76bfef84d664b1, type: 3}
   minSpawn: 0
   maxSpawn: 1

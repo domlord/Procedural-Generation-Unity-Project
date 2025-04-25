@@ -603,12 +603,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fadafe635f4ded4b971602e53c0ae58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 0}
+  grid: {fileID: 1733277399}
   spawnerData:
   - name: ChaseEnemy
-    spawnerData: {fileID: 0}
-  - name: 
-    spawnerData: {fileID: 0}
+    spawnerData: {fileID: 11400000, guid: b0742a60b7ed5754fa862d45e6c7f26b, type: 2}
+  - name: RandomItemSpawner
+    spawnerData: {fileID: 11400000, guid: 0997b3880532744449f725cccc86d500, type: 2}
 --- !u!1 &908785939
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,7 +29,7 @@ public class RoomController : MonoBehaviour
     private bool _isLoadingRoom;
 
     private bool _isBossRoomSpawned;
-    
+
     private bool _areRoomsUpdated;
 
     private void Awake()
@@ -63,7 +63,7 @@ public class RoomController : MonoBehaviour
             if (!_isBossRoomSpawned)
             {
                 StartCoroutine(SpawnBossRoom());
-            } 
+            }
             else if (_isBossRoomSpawned && !_areRoomsUpdated)
             {
                 foreach (var room in loadedRooms)
@@ -73,6 +73,7 @@ public class RoomController : MonoBehaviour
 
                 _areRoomsUpdated = true;
             }
+
             return;
         }
 
@@ -95,7 +96,6 @@ public class RoomController : MonoBehaviour
             loadedRooms.Remove(roomToRemove);
             LoadRoom("End", tempRoom.X, tempRoom.Y);
         }
-        
     }
 
     /*
@@ -157,7 +157,6 @@ public class RoomController : MonoBehaviour
             Destroy(room.gameObject);
             _isLoadingRoom = false;
         }
-        
     }
 
     public bool DoesRoomExist(int x, int y)
@@ -174,5 +173,16 @@ public class RoomController : MonoBehaviour
     public Room FindRoom(int x, int y)
     {
         return loadedRooms.Find(item => item.X == x && item.Y == y);
+    }
+
+    public string GetRandomRoomName()
+    {
+        string[] possibleRooms =
+        {
+            "Empty",
+            "Basic1"
+        };
+
+        return possibleRooms[UnityEngine.Random.Range(0, possibleRooms.Length)];
     }
 }
