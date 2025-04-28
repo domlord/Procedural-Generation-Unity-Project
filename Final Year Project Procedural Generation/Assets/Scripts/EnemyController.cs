@@ -1,120 +1,158 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public enum EnemyState
 {
-    Wander,
-    Follow,
-    Die,
+    Idle,
+    Patrol,
+    Chase,
+    Dead,
     Attack
-};
+}
 
 public class EnemyController : MonoBehaviour
 {
-    GameObject player;
-    public EnemyState currentState = EnemyState.Wander;
-    public float range;
-    public float speed;
-    public float attackRange;
-    public float coolDown;
+    public EnemyState enemyState = EnemyState.Patrol;
+    public float detectionRadius = 5f;
+    public float movementSpeed = 2f;
+    public float attackRadius = 1.5f;
+    public float attackCooldownTime = 1f;
 
-    private bool coolDownAttack;
-    private bool choosDir;
-    private bool dead = false;
-    private Vector3 randomDir;
+    private GameObject playerTarget;
+    private bool isCooldownActive;
+    private bool isChoosingDirection;
+    public bool isOutsideRoom;
+
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] float projectileSpeed = 20f;
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        playerTarget = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
     {
-        switch (currentState)
+        HandleStateMachine();
+    }
+
+
+    private void HandleStateMachine()
+    {
+        if (isOutsideRoom)
         {
-            case (EnemyState.Wander):
-                Wander();
+            enemyState = EnemyState.Idle;
+            return;
+        }
+
+        if (enemyState == EnemyState.Dead)
+            return;
+
+        float playerDistance = Vector3.Distance(transform.position, playerTarget.transform.position);
+
+        if (playerDistance <= attackRadius)
+        {
+            enemyState = EnemyState.Attack;
+        }
+        else if (playerDistance <= detectionRadius)
+        {
+            enemyState = EnemyState.Chase;
+        }
+        else
+        {
+            enemyState = EnemyState.Patrol;
+        }
+
+        switch (enemyState)
+        {
+            case EnemyState.Patrol:
+                Patrol();
                 break;
-            case (EnemyState.Follow):
-                Follow();
+            case EnemyState.Chase:
+                ChasePlayer();
                 break;
-            case (EnemyState.Die):
+            case EnemyState.Attack:
+                ChasePlayer(); // 👈 Move toward player
+                PerformAttack();
                 break;
-            case (EnemyState.Attack):
-                Attack();
-                break;
-        }
-
-        if (IsPlayerInRange(range) && currentState != EnemyState.Die)
-        {
-            currentState = EnemyState.Follow;
-        }
-        else if (!IsPlayerInRange(range) && currentState != EnemyState.Die)
-        {
-            currentState = EnemyState.Wander;
-        }
-
-        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
-        {
-            currentState = EnemyState.Attack;
         }
     }
 
-    private void Attack()
+    private void Patrol()
     {
-        if (!coolDownAttack)
+        if (!isChoosingDirection)
         {
-            GameController.DamagePlayer(1);
-            StartCoroutine(CoolDown());
+            StartCoroutine(ChooseNewDirection());
+        }
+
+        transform.position += transform.up * (movementSpeed * Time.deltaTime);
+    }
+
+    private void ChasePlayer()
+    {
+        var direction = (playerTarget.transform.position - transform.position).normalized;
+        transform.position += direction * (movementSpeed * Time.deltaTime);
+    }
+
+    private void PerformAttack()
+    {
+        if (isCooldownActive)
+            return;
+
+        Debug.Log("Enemy is shooting");
+        // ShootAtPlayer();
+
+        StartCoroutine(AttackCooldown());
+    }
+
+
+    private IEnumerator ChooseNewDirection()
+    {
+        isChoosingDirection = true;
+        yield return new WaitForSeconds(Random.Range(2f, 5f));
+
+        float randomAngle = Random.Range(0f, 360f);
+        transform.rotation = Quaternion.Euler(0, 0, randomAngle);
+
+        isChoosingDirection = false;
+    }
+
+    private IEnumerator AttackCooldown()
+    {
+        isCooldownActive = true;
+        yield return new WaitForSeconds(attackCooldownTime);
+        isCooldownActive = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerBullet"))
+        {
+            HandleDeath();
         }
     }
 
-    private IEnumerator CoolDown()
-    {
-        coolDownAttack = true;
-        yield return new WaitForSeconds(coolDown);
-        coolDownAttack = false;
-    }
-
-    private bool IsPlayerInRange(float range)
-    {
-        return Vector3.Distance(player.transform.position, transform.position) <= range;
-    }
-
-    private void Follow()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-    }
-
-    private void Wander()
-    {
-        if (!choosDir)
-        {
-            StartCoroutine(ChooseDirection());
-        }
-
-        transform.position += -transform.forward * speed * Time.deltaTime;
-        if (IsPlayerInRange(range))
-        {
-            currentState = EnemyState.Follow;
-        }
-    }
-
-    private IEnumerator ChooseDirection()
-    {
-        choosDir = true;
-        yield return new WaitForSeconds(Random.Range(2f, 8f));
-        randomDir = new Vector3(0, 0, Random.Range(0, 360));
-        Quaternion nextRotation = Quaternion.Euler(randomDir);
-        transform.rotation = Quaternion.Lerp(transform.rotation, nextRotation, Random.Range(0.5f, 2.5f));
-        choosDir = false;
-    }
-
-    public void Death()
+    public void HandleDeath()
     {
         Destroy(gameObject);
     }
+
+    // private void ShootAtPlayer()
+    // {
+    //     if (projectilePrefab == null)
+    //     {
+    //         Debug.LogWarning($"Enemy {name} is missing a projectile prefab!");
+    //         return;
+    //     }
+    //
+    //     GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+    //
+    //     Vector2 direction = (playerTarget.transform.position - transform.position).normalized;
+    //     Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+    //
+    //     if (rb != null)
+    //     {
+    //         rb.velocity = direction * projectileSpeed;
+    //     }
+    // }
 }

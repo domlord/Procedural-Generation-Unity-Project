@@ -143,6 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b627b678f18f6c4f928d1fb237f2389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 0
-  range: 10
-  speed: 1
+  enemyState: 1
+  detectionRadius: 7
+  movementSpeed: 1
+  attackRadius: 3
+  attackCooldownTime: 1
+  isOutsideRoom: 0
+  projectilePrefab: {fileID: 3087137475735532283, guid: 16f4cab67d9163e4c836047ab6e19da4, type: 3}
+  projectileSpeed: 20

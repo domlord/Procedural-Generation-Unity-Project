@@ -27,6 +27,5 @@ public class PlayerController : MonoBehaviour
         _movement.Set(InputManager.Movement.x, InputManager.Movement.y);
 
         _rb.velocity = _movement * moveSpeed;
-        collectedText.text = "Items Collected: " + collectedAmount;
     }
 }

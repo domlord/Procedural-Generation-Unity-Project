@@ -144,9 +144,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item:
-    name: 
+    name: boot
     description: 
-    itemImage: {fileID: 0}
+    itemImage: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   healthChange: 0
   moveSpeedChange: 0
   collectedItemText: {fileID: 0}

@@ -60,7 +60,7 @@ public class GameController : MonoBehaviour
         healthText.text = "Health: " + health;
     }
 
-    public static void DamagePlayer(int damage)
+    public void DamagePlayer(int damage)
     {
         Health -= damage;
 

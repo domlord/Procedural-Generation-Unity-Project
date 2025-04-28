@@ -7,12 +7,11 @@ public class DungeonGenerator : MonoBehaviour
 {
     public DungeonGenerationData dungeonGenerationData;
 
-    private List<Vector2Int> _dungeonRooms;
 
     private void Start()
     {
-        _dungeonRooms = DungeonCrawlerController.GenerateDungeon(dungeonGenerationData);
-        SpawnRooms(_dungeonRooms);
+        var dungeonRooms = DungeonCrawlerController.GenerateDungeon(dungeonGenerationData);
+        SpawnRooms(dungeonRooms);
     }
 
     private void SpawnRooms(IEnumerable<Vector2Int> rooms)

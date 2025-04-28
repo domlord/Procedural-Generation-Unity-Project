@@ -12,15 +12,10 @@ public class Item
     public Sprite itemImage;
 }
 
+
 public class CollectionController : MonoBehaviour
 {
     public Item Item;
-    public float healthChange;
-    public float moveSpeedChange;
-    public TMP_Text collectedItemText;
-    public float attackSpeedChange;
-    public float bulletSizeChange;
-
 
     private void Start()
     {
@@ -34,11 +29,7 @@ public class CollectionController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerController.collectedAmount++;
-            GameController.HealPlayer(healthChange);
-            GameController.MoveSpeedChange(moveSpeedChange);
-            GameController.FireRateChange(attackSpeedChange);
-            GameController.BulletSizeChange(bulletSizeChange);
+            GameManager.Instance.AddStat(GameManager.StatType.ItemsHeld);
             Destroy(gameObject);
         }
     }
