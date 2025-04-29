@@ -836,6 +836,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemsText: {fileID: 732160525}
   numberOfLevelsCompletedText: {fileID: 491383480}
+  playerHealthText: {fileID: 710007691}
 --- !u!1 &1347366030
 GameObject:
   m_ObjectHideFlags: 0
@@ -1368,6 +1369,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5657040896402296679, guid: cf40068e58153154aa76bfef84d664b1, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 3087137475735532283, guid: ce40e9b2f25fd19469b605afeeeef4a9, type: 3}
     - target: {fileID: 7667183140700426246, guid: cf40068e58153154aa76bfef84d664b1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.6562096
@@ -1421,6 +1426,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2993505592312543083, guid: c51db6b623ad5d74b8417b3e6b8d243f, type: 3}
+      propertyPath: playerHealth
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2993505592312543083, guid: c51db6b623ad5d74b8417b3e6b8d243f, type: 3}
       propertyPath: collectedText
       value: 
