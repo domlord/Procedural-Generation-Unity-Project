@@ -18,24 +18,23 @@ public class EnemyController : MonoBehaviour
     public float attackRadius = 1.5f;
     public float attackCooldownTime = 1f;
 
-    private GameObject playerTarget;
+    private GameObject _playerTarget;
     private bool isCooldownActive;
     private bool isChoosingDirection;
     public bool isOutsideRoom;
 
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] float projectileSpeed = 20f;
+    [SerializeField] private float projectileSpeed = 20f;
 
     private void Start()
     {
-        playerTarget = GameObject.FindGameObjectWithTag("Player");
+        _playerTarget = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
     {
         HandleStateMachine();
     }
-
 
     private void HandleStateMachine()
     {
@@ -48,7 +47,7 @@ public class EnemyController : MonoBehaviour
         if (enemyState == EnemyState.Dead)
             return;
 
-        float playerDistance = Vector3.Distance(transform.position, playerTarget.transform.position);
+        float playerDistance = Vector3.Distance(transform.position, _playerTarget.transform.position);
 
         if (playerDistance <= attackRadius)
         {
@@ -72,8 +71,8 @@ public class EnemyController : MonoBehaviour
                 ChasePlayer();
                 break;
             case EnemyState.Attack:
-                ChasePlayer(); // 👈 Move toward player
-                PerformAttack();
+                ChasePlayer();   // Still move while attacking
+                PerformAttack(); // 🔥 Now actually shoot
                 break;
         }
     }
@@ -90,7 +89,7 @@ public class EnemyController : MonoBehaviour
 
     private void ChasePlayer()
     {
-        var direction = (playerTarget.transform.position - transform.position).normalized;
+        Vector3 direction = (_playerTarget.transform.position - transform.position).normalized;
         transform.position += direction * (movementSpeed * Time.deltaTime);
     }
 
@@ -99,12 +98,30 @@ public class EnemyController : MonoBehaviour
         if (isCooldownActive)
             return;
 
-        Debug.Log("Enemy is shooting");
-        // ShootAtPlayer();
+        Debug.Log("Enemy is shooting!");
 
-        StartCoroutine(AttackCooldown());
+        ShootAtPlayer(); // 🔥 Now shoots at player properly
+        StartCoroutine(AttackCooldown()); // 1-second delay between shots
     }
 
+    private void ShootAtPlayer()
+    {
+        if (projectilePrefab == null)
+        {
+            Debug.LogWarning($"Enemy {name} is missing a projectile prefab!");
+            return;
+        }
+
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+
+        Vector2 direction = (_playerTarget.transform.position - transform.position).normalized;
+        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+
+        if (rb != null)
+        {
+            rb.velocity = direction * projectileSpeed;
+        }
+    }
 
     private IEnumerator ChooseNewDirection()
     {
@@ -136,23 +153,4 @@ public class EnemyController : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
-    // private void ShootAtPlayer()
-    // {
-    //     if (projectilePrefab == null)
-    //     {
-    //         Debug.LogWarning($"Enemy {name} is missing a projectile prefab!");
-    //         return;
-    //     }
-    //
-    //     GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-    //
-    //     Vector2 direction = (playerTarget.transform.position - transform.position).normalized;
-    //     Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-    //
-    //     if (rb != null)
-    //     {
-    //         rb.velocity = direction * projectileSpeed;
-    //     }
-    // }
 }

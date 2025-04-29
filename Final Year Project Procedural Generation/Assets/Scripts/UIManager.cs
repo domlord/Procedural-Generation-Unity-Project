@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text itemsText;
     [SerializeField] TMP_Text numberOfLevelsCompletedText;
+    [SerializeField] TMP_Text playerHealthText;
 
     private void Start()
     {
@@ -18,6 +19,7 @@ public class UIManager : MonoBehaviour
 
         itemsText.text = "Items Held: " + GameManager.Instance.itemsHeld;
         numberOfLevelsCompletedText.text = "Number of levels: " + GameManager.Instance.levelsCompleted;
+        playerHealthText.text = "Health: " + GameManager.Instance.playerHealth;
     }
 
     private void Update()

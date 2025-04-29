@@ -8,11 +8,13 @@ public class GameManager : MonoBehaviour
 
     public int itemsHeld; // Tracks how many items the player is carrying
     public int levelsCompleted; // Tracks how many items the player is carrying
+    public int playerHealth; // Tracks the player health
 
     public enum StatType
     {
         ItemsHeld,
-        LevelsCompleted
+        LevelsCompleted,
+        PlayerHealth
     }
 
     private void Awake()
@@ -35,12 +37,14 @@ public class GameManager : MonoBehaviour
         {
             case StatType.ItemsHeld:
                 itemsHeld++;
-                Debug.Log($"Item picked up! Total items: {itemsHeld}");
                 break;
 
             case StatType.LevelsCompleted:
                 levelsCompleted++;
-                Debug.Log($"Level completed! Total levels: {levelsCompleted}");
+                break;
+            
+            case StatType.PlayerHealth:
+                playerHealth--;
                 break;
         }
     }

@@ -192,11 +192,7 @@ public class RoomController : MonoBehaviour
             }
 
             bool shouldActivateDoors = isActiveRoom && enemies.Any();
-            foreach (var door in doors)
-            {
-                if (door == null) continue;
-                door.doorCollider.SetActive(shouldActivateDoors);
-            }
+        
         }
     }
 
