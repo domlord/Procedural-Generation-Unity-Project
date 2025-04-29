@@ -4,43 +4,43 @@ using UnityEngine;
 
 public enum Direction
 {
-    up = 0,
-    left = 1,
-    down = 2,
-    right = 3
+    Up = 0,
+    Left = 1,
+    Down = 2,
+    Right = 3
 };
 
 
 public class DungeonCrawlerController : MonoBehaviour
-{
-    public static List<Vector2Int> PositionsVisited = new List<Vector2Int>();
+{ 
+    private static readonly  List<Vector2Int> PositionsVisited = new();
 
-    private static readonly Dictionary<Direction, Vector2Int> DirectionMovementMap =
-        new Dictionary<Direction, Vector2Int>
-        {
-            { Direction.up, Vector2Int.up },
-            { Direction.left, Vector2Int.left },
-            { Direction.down, Vector2Int.down },
-            { Direction.right, Vector2Int.right }
-        };
+    private static readonly Dictionary<Direction, Vector2Int> DirectionMovementMap = new()
+    {
+        { Direction.Up, Vector2Int.up },
+        { Direction.Left, Vector2Int.left },
+        { Direction.Down, Vector2Int.down },
+        { Direction.Right, Vector2Int.right }
+    };
+
 
     public static List<Vector2Int> GenerateDungeon(DungeonGenerationData dungeonGenerationData)
     {
-        List<DungeonCrawler> dungeonCrawlers = new List<DungeonCrawler>();
-        DungeonCrawler dungeonCrawlerZero = new GameObject("DungeonCrawlerZero").AddComponent<DungeonCrawler>();
+        var dungeonCrawlers = new List<DungeonCrawler>();
+        var dungeonCrawlerZero = new GameObject("DungeonCrawlerZero").AddComponent<DungeonCrawler>();
         
-        for (int i = 0; i < dungeonGenerationData.numberOfCrawlers; i++) 
+        for (var i = 0; i < dungeonGenerationData.numberOfCrawlers; i++) 
         {
            dungeonCrawlers.Add(dungeonCrawlerZero); 
         }
         
-        int iterations = Random.Range(dungeonGenerationData.iterationMin, dungeonGenerationData.iterationMax);
+        var iterations = Random.Range(dungeonGenerationData.iterationMin, dungeonGenerationData.iterationMax);
 
-        for (int i = 0; i < iterations; i++)
+        for (var i = 0; i < iterations; i++)
         {
             foreach (var dungeonCrawler in dungeonCrawlers)
             {
-                Vector2Int newPosition = dungeonCrawler.Move(DirectionMovementMap);
+                var newPosition = dungeonCrawler.Move(DirectionMovementMap);
                 PositionsVisited.Add(newPosition);
             }
         }
