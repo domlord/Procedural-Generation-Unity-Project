@@ -5,8 +5,8 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text itemsText;
-    [SerializeField] TMP_Text numberOfLevelsCompletedText;
-    [SerializeField] TMP_Text playerHealthText;
+    [SerializeField] private TMP_Text numberOfLevelsCompletedText;
+    [SerializeField] private TMP_Text playerHealthText;
 
     private void Start()
     {
