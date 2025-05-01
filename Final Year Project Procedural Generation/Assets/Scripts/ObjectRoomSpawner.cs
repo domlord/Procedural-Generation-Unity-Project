@@ -31,8 +31,8 @@ public class ObjectRoomSpawner : MonoBehaviour
 
     void SpawnObjects(RandomSpawner data)
     {
-        var randomIteration = Random.Range(data.spawnerData.minimumSpawnProbability,
-            data.spawnerData.maximumSpawnProbability + 1);
+        var randomIteration = Random.Range(data.spawnerData.minNumberOfItemsToSpawn,
+            data.spawnerData.maxNumberOfItemsToSpawn + 1);
 
         for (var i = 0; i < randomIteration; i++)
         {

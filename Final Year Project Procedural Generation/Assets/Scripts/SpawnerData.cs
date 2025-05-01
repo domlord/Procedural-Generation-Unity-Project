@@ -7,6 +7,6 @@ using UnityEngine.Serialization;
 public class SpawnerData : ScriptableObject
 {
     public GameObject spawnableObject;
-    public int minimumSpawnProbability;
-    public int maximumSpawnProbability;
+    [FormerlySerializedAs("minimumSpawnProbability")] public int minNumberOfItemsToSpawn;
+    [FormerlySerializedAs("maximumSpawnProbability")] public int maxNumberOfItemsToSpawn;
 }

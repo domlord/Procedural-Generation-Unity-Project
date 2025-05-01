@@ -19,12 +19,12 @@ public class RoomController : MonoBehaviour
 
     private RoomInfo _currentRoomToLoad;
     private Room _activeRoom;
-    private readonly Queue<RoomInfo> _roomLoadQueue = new Queue<RoomInfo>();
+    private readonly Queue<RoomInfo> _roomLoadQueue = new();
     private bool _isLoadingRoom;
     private bool _bossRoomSpawned;
     private bool _roomsUpdated;
 
-    public List<Room> LoadedRooms { get; } = new List<Room>();
+    private List<Room> LoadedRooms { get; } = new();
 
     private void Awake()
     {
@@ -190,9 +190,7 @@ public class RoomController : MonoBehaviour
                 if (enemy == null) continue;
                 enemy.isOutsideRoom = !isActiveRoom;
             }
-
-            bool shouldActivateDoors = isActiveRoom && enemies.Any();
-        
+            
         }
     }
 
