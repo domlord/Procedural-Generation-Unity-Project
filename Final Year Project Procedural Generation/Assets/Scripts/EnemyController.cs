@@ -71,8 +71,8 @@ public class EnemyController : MonoBehaviour
                 ChasePlayer();
                 break;
             case EnemyState.Attack:
-                ChasePlayer();   // Still move while attacking
-                PerformAttack(); // 🔥 Now actually shoot
+                ChasePlayer();   // move while attacking
+                PerformAttack(); // shoot
                 break;
         }
     }
